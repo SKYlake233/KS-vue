@@ -11,6 +11,7 @@
         <el-menu-item index="device" >管理设备</el-menu-item>
         <el-menu-item index="place" >监测点管理</el-menu-item>
         <el-menu-item index="item" >设备分配管理</el-menu-item>
+        <el-menu-item index="spot" >监测点查看</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="2">
         <template #title>数据</template>

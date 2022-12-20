@@ -8,7 +8,6 @@
       <el-button type="success" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
 
-<!--  <el-button size="small" @click=openDialog>开始</el-button>-->
   <el-table :data="tableData" border style="width: 100%">
     <el-table-column prop="id" label="设备id" sortable />
     <el-table-column prop="placeName" label="地点名称"  />
@@ -113,8 +112,10 @@ export default {
     add(){
       this.popup=true;
       this.form={};
+      this.initMap();
     },
-    load(){//将后端查询到的数据渲染到web表格
+    load(){
+      //将后端查询到的数据渲染到web表格
       request.post("/place/page",{
         "pageSize":this.pageSize,
         "pageNum":this.currentPage,
@@ -125,7 +126,7 @@ export default {
       }).then(res => {
         this.tableData=res.data.data
         this.total=res.data.total
-      })
+      });
     },
     save(){
       if(this.form.id){//如果存在此ID，更新，，，否则插入
@@ -171,7 +172,6 @@ export default {
     handleEdit(row){
       this.form=JSON.parse(JSON.stringify(row))
       this.popup = true;
-      this.initMap();
     },
     initMap(){
       this.map = new BMap.Map("map");

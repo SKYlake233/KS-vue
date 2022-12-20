@@ -40,6 +40,11 @@ const routes =[
                 component: ()=>import("@/view/device_item"),
 
             },
+            {
+                path: '/admin/spot',
+                name: 'spot',
+                component: ()=>import("@/view/spot"),
+            },
         ]
     },
     {

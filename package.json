@@ -15,7 +15,6 @@
     "unplugin-auto-import": "^0.12.1",
     "unplugin-vue-components": "^0.22.12",
     "vue": "^3.2.13",
-    "vue-baidu-map": "^0.21.22",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
