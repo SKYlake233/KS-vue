@@ -13,8 +13,10 @@
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="id" label="设备id" sortable />
       <el-table-column prop="deviceCate" label="设备型号id"  />
+      <el-table-column prop="deviceName" label="设备型号名称"  />
       <el-table-column prop="installStatus" label="安装状态（0表示未分配 ， 1 表示分配）" />
       <el-table-column prop="installLocation" label="安装地点id" />
+      <el-table-column prop="placeName" label="安装地点名称" />
       <el-table-column prop="installTime" label="安装日期" />
       <el-table-column prop="endTime" label="预计退休日期"/>
       <el-table-column fixed="right" label="操作" width="120">
@@ -40,14 +42,30 @@
             <el-form-item label="设备id">
               <el-input v-model="form.id" readonly="readonly" style="width: 80%"/>
             </el-form-item>
-            <el-form-item label="安装地点">
-              <el-input v-model="form.installLocation"  style="width: 80%"/>
+            <el-form-item label="安装地点id" >
+              <el-input v-model="form.installLocation" readonly = readonly  style="width: 80%"/>
+            </el-form-item>
+            <el-form-item label="原安装地点">
+              <el-input v-model="form.placeName"  style="width: 80%"/>
             </el-form-item>
           </el-form>
+          <el-select
+              v-model="this.form.installLocation"
+              placeholder="请在下拉框中选择名称"
+              maxlength="255"
+              :disabled="false"
+              clearable>
+            <el-option
+                v-for="item in placeData"
+                :key="item.id"
+                :label="item.placeName"
+                :value="item.id">
+            </el-option>
+          </el-select>
           <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="save">确定</el-button>
+        <el-button type="primary" @click="mdf">确定</el-button>
       </span>
           </template>
         </el-dialog>
@@ -75,13 +93,13 @@ export default {
       pageSize:10,//每页显示数据条数
       tableData:[
       ],
-      deviceName: [],
-      placeName: [],
+      placeData:[],
       modify:{},
     }
   },
   created() {//加载页面时调用load
     this.load();
+    this.loadData();
   },
 
   methods:{
@@ -97,47 +115,32 @@ export default {
           "search":this.search
         }
       }).then(res => {
-        console.log(res)
         this.tableData=res.data.data
         this.total=res.data.total
       })
     },
     handleSizeChange(pageSize){//每页显示多少条数据
       this.pageSize=pageSize
-      this.load()
+      this.load();
     },
-    save(){
-      if(this.form.id){//如果存在此ID，更新，，，否则插入
-        request.post("/device/upd",this.form).then(res=>{
-          console.log(res)
-          if(res.data===1){
-            this.$message({
-              type:"success",
-              message:"修改成功"
-            })}else{
-            this.$message({
-              type:"success",
-              message:"修改失败"
-            })
-          }
-          this.load();  //添加完成后刷新表单
-          this.dialogVisible=false//关闭弹窗
-        })}else{
-        request.post("/device/add",this.form).then(res=>{
-          console.log(res)
-          if(res.data===1){
-            this.$message({
-              type:"success",
-              message:"添加成功"
-            })}else{
-            this.$message({
-              type:"success",
-              message:"添加失败"
-            })
-          }
-          this.load();  //添加完成后刷新表单
-          this.dialogVisible=false//关闭弹窗
-        })}
+    loadData(){
+      request.get("/place/getData").then(res =>{this.placeData = res.data;
+        console.log(res.data)})
+    },
+    mdf(){
+      request.get("/item/modify/"+this.form.id+"/"+this.form.installLocation).then(res =>{
+
+        if(res.code == "200"){
+          this.$message({
+            type:"success",
+            message:"修改成功"});
+        }
+        else{
+          this.$message({
+            type:"error",
+            message:"修失败"
+          })};
+      })
     },
     handleCurrentChange(pageNum){//跳转到第几页
       this.currentPage=pageNum
