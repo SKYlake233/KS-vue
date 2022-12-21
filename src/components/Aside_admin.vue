@@ -15,9 +15,9 @@
       </el-sub-menu>
       <el-sub-menu index="2">
         <template #title>数据</template>
-        <el-menu-item index="device" >各地点数据</el-menu-item>
-        <el-menu-item index="place" >各地点数据图</el-menu-item>
-        <el-menu-item index="place" >变化情况</el-menu-item>
+        <el-menu-item index="alarm" >报警信息</el-menu-item>
+        <el-menu-item index="dataview" >各地点数据图</el-menu-item>
+        <el-menu-item index="" >变化情况</el-menu-item>
       </el-sub-menu>
     </el-menu>
   </div>

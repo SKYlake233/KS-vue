@@ -139,8 +139,10 @@ export default {
           this.$message({
             type:"error",
             message:"修失败"
-          })};
-      })
+          })}
+        this.load();
+      });
+
     },
     handleCurrentChange(pageNum){//跳转到第几页
       this.currentPage=pageNum

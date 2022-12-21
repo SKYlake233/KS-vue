@@ -26,6 +26,7 @@
       <el-table-column fixed="right" label="操作" width="120">
         <template #default="scope">
           <el-button @click="handleEdit(scope.row)"  size="small" type="primary" >修改</el-button>
+          <el-button @click="itemAdd(scope.row)"  size="small" type="primary" >添加元件</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -84,6 +85,30 @@
       </span>
           </template>
         </el-dialog>
+
+        <el-dialog v-model="this.addDialogVisble" title="提示" width="30%">
+          <!--  添加数据的弹窗      -->
+          <el-form model="form" label-width="120px">
+            <el-form-item label="设备id">
+              <el-input v-model="form.id" readonly="readonly" style="width: 80%"/>
+            </el-form-item>
+            <el-form-item label="设备型号">
+              <el-input v-model="form.deviceName" readonly="readonly"  style="width: 80%"/>
+            </el-form-item>
+            <el-form-item label="商品数量">
+              <el-input v-model="form.deviceLeft" readonly="readonly" style="width: 80%"/>
+            </el-form-item>
+            <el-form-item label="添加的数量">
+              <el-input v-model="this.insertData" style="width: 80%"/>
+            </el-form-item>
+          </el-form>
+          <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="addDialogVisble = false">取消</el-button>
+        <el-button type="primary" @click="saveItem">确定</el-button>
+      </span>
+          </template>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -100,6 +125,8 @@ export default {
   },
   data(){
     return{
+      addDialogVisble:false,
+      insertData:0,
       form:{},
       dialogVisible:false,
       search:'',
@@ -119,9 +146,27 @@ export default {
       this.dialogVisible=true;
       this.form={};
     },
+    saveItem(){
+      request.get("/device/addItem/"+this.form.id + "/"+this.insertData).then(res => {
+        if(res.code == "200"){
+          this.$message({
+            type:"success",
+            message:"添加成功"});
+        }
+        else{
+          this.$message({
+            type:"success",
+            message:"添加失败"});
+        }
+      })
+    },
     handleEdit(row){//编辑
       this.form=JSON.parse(JSON.stringify(row))
       this.dialogVisible=true
+    },
+    itemAdd(row){//编辑
+      this.form=JSON.parse(JSON.stringify(row))
+      this.addDialogVisble=true
     },
     load(){//将后端查询到的数据渲染到web表格
       request.post("/device/page",{

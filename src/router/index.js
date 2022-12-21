@@ -45,6 +45,16 @@ const routes =[
                 name: 'spot',
                 component: ()=>import("@/view/spot"),
             },
+            {
+                path: '/admin/alarm',
+                name: 'alarm',
+                component: ()=>import("@/view/alarm"),
+            },
+            {
+                path: '/admin/dataview',
+                name: 'admindataview',
+                component: ()=>import("@/view/dataview"),
+            },
         ]
     },
     {
