@@ -41,7 +41,8 @@
           <el-form label-width="100px" size="mini">
             <el-form-item label="获取定位">
               <!--            <el-button type="primary" @click="fixedPos">重新定位</el-button>-->
-              <el-button type="primary" @click="initMap">获得地图</el-button>
+              <el-button type="primary" @click="initNewMap">获得洛阳</el-button>
+              <el-button type="primary" @click="initMap">获得该点地图</el-button>
             </el-form-item>
             <el-form-item label="地点id">
               <el-input v-model="this.form.id" readonly="readonly"></el-input>
@@ -63,7 +64,7 @@
               </div>
             </el-form-item>
           </el-form>
-          <div style="height: 500px" id="map"></div>
+          <div style="height: 400px" id="map"></div>
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button
@@ -106,14 +107,18 @@ export default {
     }
   },
   created() {//加载页面时调用load
-    this.load()
+    this.load();
+
+  },
+  mounted() {
+    this.map = new BMap.Map("map");
   },
   methods:{
     add(){
-      this.popup=true;
       this.form={};
-      this.initMap();
+      this.popup=true;
     },
+    //加载数据
     load(){
       //将后端查询到的数据渲染到web表格
       request.post("/place/page",{
@@ -128,8 +133,9 @@ export default {
         this.total=res.data.total
       });
     },
+    //保存  已有就修改  没有就新建
     save(){
-      if(this.form.id){//如果存在此ID，更新，，，否则插入
+      if(this.form.id){
         request.post("/place/upd",this.form).then(res=>{
           console.log(res)
           if(res.data===1){
@@ -161,6 +167,7 @@ export default {
           this.dialogVisible=false//关闭弹窗
         })}
     },
+
     handleSizeChange(pageSize){//每页显示多少条数据
       this.pageSize=pageSize
       this.load()
@@ -169,16 +176,26 @@ export default {
       this.currentPage=pageNum
       this.load()
     },
+
     handleEdit(row){
       this.form=JSON.parse(JSON.stringify(row))
       this.popup = true;
     },
+
     initMap(){
       this.map = new BMap.Map("map");
       var point = new BMap.Point(this.form.longitude,this.form.latitude);
       this.map.centerAndZoom(point, 15);
       this.map.enableScrollWheelZoom(true);
       this.map.addControl(new BMap.ScaleControl());
+      this.handleMarker(this,point);
+    },
+    initNewMap(){
+      this.map = new BMap.Map("map");
+      var point = new BMap.Point(112.45, 34.62);
+      this.map.centerAndZoom(point, 15);
+      this.map.setCurrentCity("洛阳");
+      this.map.enableScrollWheelZoom(true);
       this.handleMarker(this,point);
     },
     // 点击定位-定位到当前位置
