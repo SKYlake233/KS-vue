@@ -13,8 +13,14 @@ const routes =[
     },
     {
         path:'/user',
-        name:'user',
-        component:()=>import("@/components/user")
+        name:'user_layout',
+        component:()=>import("@/layout/Layout_user"),
+        redirect: "/user/dataview",
+        children: [{
+            path: '/user/dataview',
+            name: 'user_dataview',
+            component: ()=>import("@/view/dataview"),
+        },]
     },
     {
         path:'/admin',
