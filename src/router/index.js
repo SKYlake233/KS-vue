@@ -61,6 +61,11 @@ const routes =[
                 name: 'admindataview',
                 component: ()=>import("@/view/dataview"),
             },
+            {
+                path: '/admin/chart',
+                name: 'chart',
+                component: ()=>import("@/view/chart"),
+            },
         ]
     },
     {
