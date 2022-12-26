@@ -43,10 +43,10 @@ export default {
       this.myChart = echarts.init(document.getElementById('dataBox'));
       // 绘制图表
       this.myChart.setOption({
-        title: {text: 'placeData:[]最近一周SO2变化'},
+        title: { text: '西工区最近一周SO2变化' },
         tooltip: {},
         xAxis: {
-          data: ["1", "2", "3", "4", "5", "6", "7"]
+          data: ["1","2","3","4","5","6","7"]
         },
         yAxis: {},
         series: [{
@@ -57,34 +57,26 @@ export default {
       });
       console.log(this.dataTable)
     },
-    load() {
-      requests.get("/data/history/" + this.place_id).then(res => {
-        this.dataTable = res.data;
-        this.myChart.setOption({
-          series: [{
+    load(){
+      requests.get("/data/history/" + this.place_id).then(res => {this.dataTable = res.data;
+        this.myChart.setOption({series: [{
             name: 'CO',
             type: 'line',
             data: this.dataTable["co"]
-          }]
-        });
+          }]});
       });
     },
-    place_change(value, key) {
-      requests.get("/data/history/" + this.place_id).then(res => {
-        this.dataTable = res.data;
-        this.selectChanged(value, this.index)
-      })
+    place_change(value,key){
+      requests.get("/data/history/" + this.place_id).then(res => {this.dataTable = res.data;this.selectChanged(value, this.index)})
     },
-    selectChanged(value, key) {
+    selectChanged(value,key){
       console.log(key);
-      if (key == 'co') {
-        this.myChart.setOption({
-          series: [{
+      if(key == 'co'){
+        this.myChart.setOption({series: [{
             name: 'CO',
             type: 'line',
             data: this.dataTable["co"]
-          }]
-        });
+          }]});
       }
       else if(key == 'so2'){
         this.myChart.setOption({series: [{

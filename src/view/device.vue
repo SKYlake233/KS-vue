@@ -30,6 +30,8 @@
         </template>
       </el-table-column>
     </el-table>
+
+
     <div style="margin:10px 0">
       <div class="demo-pagination-block">
         <el-pagination
@@ -173,7 +175,6 @@ export default {
         "pageSize":this.pageSize,
         "pageNum":this.currentPage,
         "param":{
-          "marketId": this.marketId,
           "search":this.search
         }
       }).then(res => {

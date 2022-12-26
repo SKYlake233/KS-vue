@@ -24,7 +24,8 @@ export default {
   },
   methods: {
     load(){
-      requests.get("/item/mapInfo").then(res => {this.spot = res.data;this.showMarker()})
+      requests.get("/item/mapInfo").then(res => {this.spot = res.data;this.showMarker();console.log(res.data)})
+
       this.showMarker();
     },
     mark(points,infoWindows){
@@ -38,16 +39,17 @@ export default {
       });
     },
     getstr(data){
+      console.log(data)
       var str = '';
       for (var j = 0 ; j < data.length ; j++){
-        str = str + '设备id\xa0\xa0\xa0\xa0' + data[j].deviceId + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
-        str = str + '设备型号\xa0\xa0\xa0\xa0' + data[j].deviceName;
-        str = str + '\r\n'
+          str = str + '设备id\xa0\xa0\xa0\xa0' + data[j].deviceId + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
+          str = str + '设备型号\xa0\xa0\xa0\xa0' + data[j].deviceName;
+          str = str + '\r\n'
       }
       return str
     },
     showMarker(){
-      /*const t = '' + (this.spot[i].deviceInfo)[j].deviceId + (this.spot[i].deviceInfo)[j].deviceName;*/
+      console.log(this.spot.length)
       for (let i = 0; i<this.spot.length; i++){
         const point = new BMap.Point(this.spot[i].longitude, this.spot[i].latitude);
         const opts = {

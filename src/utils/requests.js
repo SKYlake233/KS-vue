@@ -3,7 +3,7 @@ import router from "@/router";
 import {ElMessageBox} from "element-plus";
 
 const request = axios.create({
-    baseURL: 'http://127.0.0.1:8081',  // baseUrl + reqUrl  就是最终的结果
+    baseURL: 'http://127.0.0.1:8080',  // baseUrl + reqUrl  就是最终的结果
     timeout: 5000
 })
 

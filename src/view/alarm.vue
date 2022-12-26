@@ -4,7 +4,9 @@
       <template v-slot:title>
         <span v-if="list.isRead == 0">[未读]</span>
         <span v-if="list.isRead == 1" class="actived">[已读]</span>
+
         <b @click="noticeActive(list.id,list.isRead)">预警信息</b></template>
+
       <div>{{list.dataIndex}}</div>
     </el-collapse-item>
   </el-collapse>
