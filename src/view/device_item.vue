@@ -24,6 +24,11 @@
           <el-button @click="handleEdit(scope.row)"  size="small" type="primary" >安装/迁移</el-button>
         </template>
       </el-table-column>
+      <el-table-column fixed="right" label="操作" width="120">
+        <template #default="scope">
+          <el-button @click="handleDel(scope.row)"  size="small" type="danger" >删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <div style="margin:10px 0">
       <div class="demo-pagination-block">
@@ -122,6 +127,18 @@ export default {
     handleSizeChange(pageSize){//每页显示多少条数据
       this.pageSize=pageSize
       this.load();
+    },
+    handleDel(row){
+      this.form=JSON.parse(JSON.stringify(row))
+      request.get("/item/del/" + this.form.id ).then(res => {
+        if(res.code == 200){
+          this.$message({
+            type:"success",
+            message:"删除成功"});
+          this.load();
+
+        }
+      })
     },
     loadData(){
       request.get("/place/getData").then(res =>{this.placeData = res.data;
